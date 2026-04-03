@@ -14,11 +14,10 @@ class TestUrbanRoutes:
     @classmethod
     def setup_class(cls):
         # do not modify - we need additional logging enabled in order to retrieve phone confirmation code
-        options = Options()
-        options.set_capability('goog:loggingPrefs', {'performance': 'ALL'})
-
-        cls.driver = webdriver.Chrome(options=options)
-
+        from selenium.webdriver import DesiredCapabilities
+        capabilities = DesiredCapabilities.CHROME
+        capabilities["goog:loggingPrefs"] = {'performance': 'ALL'}
+        cls.driver = webdriver.Chrome()
         if helpers.is_url_reachable(data.URBAN_ROUTES_URL):
             print("Connected to the Urban Routes server")
         else:
@@ -60,8 +59,6 @@ class TestUrbanRoutes:
 
         page.click_call_taxi()
 
-        time.sleep(2)
-
         page.click_supportive()
 
         page.click_phone_number()
@@ -75,7 +72,7 @@ class TestUrbanRoutes:
 
         page.click_confirm()
 
-        assert page.is_phone_number_displayed()
+        assert page.is_phone_number_displayed() == data.PHONE_NUMBER
 
 
     def test_add_credit_card(self):

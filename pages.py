@@ -1,4 +1,6 @@
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions
+from selenium.webdriver.support.wait import WebDriverWait
 
 
 # Defining the page class, locators and method in the class
@@ -51,11 +53,18 @@ class UrbanRoutesPage:
 
     def click_call_taxi(self):
         # click call taxi
-        self.driver.find_element(*self.CALL_TAXI_BUTTON_LOCATOR).click()
+        element = WebDriverWait(self.driver, 3).until(
+            expected_conditions.element_to_be_clickable(self.CALL_TAXI_BUTTON_LOCATOR)
+        )
+        element.click()
 
     def click_supportive(self):
         # click supportive
-        self.driver.find_element(*self.SUPPORTIVE_LOCATOR).click()
+        element = WebDriverWait(self.driver, 3).until(
+            expected_conditions.element_to_be_clickable(self.SUPPORTIVE_LOCATOR)
+        )
+        element.click()
+
 
     def is_supportive_plan_selected(self):
         element = self.driver.find_element(*self.SUPPORTIVE_LOCATOR)
@@ -75,7 +84,7 @@ class UrbanRoutesPage:
 
     def is_phone_number_displayed(self):
         element = self.driver.find_element(*self.PHONE_NUMBER_DISPLAY_LOCATOR)
-        return element.is_displayed()
+        return element.text
 
     def click_next_button(self):
         # Click next button
